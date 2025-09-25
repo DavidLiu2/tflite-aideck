@@ -1,0 +1,4 @@
+data/coco/images/
+data/coco/annotations/
+!data/coco/annotations/train_person.json
+!data/coco/annotations/val_person.json
