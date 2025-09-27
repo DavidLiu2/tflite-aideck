@@ -1,7 +1,9 @@
 1. install dependencies
-$ pip install requirements.txt
+download python 3.10 and set up venv
+$ pip install -r requirements.txt
 
 2. acquire image dataset
+download wget and unzip (https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058)
 $ cd data
 $ source coco.sh
 
