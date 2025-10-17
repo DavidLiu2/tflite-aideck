@@ -1,0 +1,25 @@
+# Load your INT8 TFLite (raw heads) exported by convert/tflite_convert_int8.py
+open export/person_ssd_int8.tflite
+
+# Simplify & fuse for GAP8
+graph_simplify
+fuse
+
+# Ensure signed-8 quant
+quanttype SQ8
+
+# Calibrate with your rep images (same folder you built earlier)
+# Adjust limit if you want to speed up or be more thorough
+set_calibration_options dataset_dir=data/rep_images limit=400 shuffle=true
+calibrate
+
+# Sanity
+summary
+
+# Save NNTool model
+mkdir -p nntool
+save nntool/person_ssd_sq8.nnt
+
+# Export AutoTiler project (verb name varies by NNTool version: write_c / write_code / generate)
+# Try write_c first:
+write_c nntool/autotiler_out autotiler

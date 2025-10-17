@@ -62,3 +62,26 @@ $ pip install --no-deps "gin-config==0.5.0" "clu==0.0.12" "ml-collections==0.1.1
 $ cd models/research
 $ python -m object_detection.model_main_tf2   --pipeline_config_path=YOUR_PATH/tflite-aideck/person_ssd.config   --model_dir=YOUR_PATH/tflite-aideck/training/person_ssd
 
+7. use the custom script to export the model (modify the filepaths)
+in your tflite-aideck repo
+$ python convert/export_raw_heads_savedmodels.py
+
+8. create representative dataset to quantize model
+run from tflite-aideck dir
+$ python convert/coco_to_rep_persons.py \
+  --ann_json data/coco/annotations/train_person.json \
+  --images_dir data/coco/images/train2017 \
+  --out_dir data/rep_images \
+  --num_full 400 \
+  --crops_per_image 2 \
+  --crop_pad 0.15 \
+  --seed 7
+$ python convert/rep_dataset.py
+
+9. quantize model to export/ folder
+$ python convert/tflite_convert_int8.py
+$ python convert/verify_tflite_outputs.py
+make sure that the only tensors that are dtype float are outputs (no float weights or activations)
+ex. OUT0: {'name': 'StatefulPartitionedCall:1', 'shape': array([    1, 12804,     2]), 'dtype': <class 'numpy.float32'>, 'quantization': (0.0, 0)}
+
+10. use the NNTool

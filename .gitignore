@@ -2,7 +2,10 @@
 __pycache__/
 data/coco/images/
 data/coco/annotations/
+data/rep_images/
 !data/coco/annotations/train_person.json
 !data/coco/annotations/val_person.json
 annotations/
 !annotations/label_map.pbtxt
+training/person_ssd/eval/
+training/person_ssd/train/
